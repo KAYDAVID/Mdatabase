@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MusicDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Artists">
+          <Key>
+            <PropertyRef Name="AID" />
+          </Key>
+          <Property Name="AID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="YOB" Type="smallint" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\MR. PICKWICK\SOURCE\REPOS\MUSICDATABASE\MUSICDATABASE\MUSICDB.MDF.dbo.ArtistsSongs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ArtistsSongs">
+          <Key>
+            <PropertyRef Name="AID" />
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="AID" Type="int" Nullable="false" />
+          <Property Name="SID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BandBreakups">
+          <Key>
+            <PropertyRef Name="FID" />
+          </Key>
+          <Property Name="FID" Type="int" Nullable="false" />
+          <Property Name="BID" Type="int" Nullable="false" />
+          <Property Name="Form" Type="smallint" Nullable="false" />
+          <Property Name="BreakUp" Type="smallint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\MR. PICKWICK\SOURCE\REPOS\MUSICDATABASE\MUSICDATABASE\MUSICDB.MDF.dbo.BandMembers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BandMembers">
+          <Key>
+            <PropertyRef Name="FID" />
+            <PropertyRef Name="BID" />
+            <PropertyRef Name="Member" />
+          </Key>
+          <Property Name="FID" Type="int" Nullable="false" />
+          <Property Name="BID" Type="int" Nullable="false" />
+          <Property Name="Member" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bands">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="BID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="YOB" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SID" Type="int" Nullable="false" />
+          <Property Name="Review" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Songs">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="int" Nullable="false" />
+          <Property Name="Genre" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SongTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ReleaseYear" Type="smallint" />
+        </EntityType>
+        <Association Name="FK__ArtistsSong__AID__3E52440B">
+          <End Role="Artists" Type="Self.Artists" Multiplicity="1" />
+          <End Role="ArtistsSongs" Type="Self.ArtistsSongs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artists">
+              <PropertyRef Name="AID" />
+            </Principal>
+            <Dependent Role="ArtistsSongs">
+              <PropertyRef Name="AID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArtistsSong__SID__3F466844">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="ArtistsSongs" Type="Self.ArtistsSongs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="SID" />
+            </Principal>
+            <Dependent Role="ArtistsSongs">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BandBreakup__BID__4222D4EF">
+          <End Role="Bands" Type="Self.Bands" Multiplicity="1" />
+          <End Role="BandBreakups" Type="Self.BandBreakups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bands">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="BandBreakups">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BandMembers__BID__44FF419A">
+          <End Role="Bands" Type="Self.Bands" Multiplicity="1" />
+          <End Role="BandMembers" Type="Self.BandMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bands">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="BandMembers">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BandMembers__FID__440B1D61">
+          <End Role="BandBreakups" Type="Self.BandBreakups" Multiplicity="1" />
+          <End Role="BandMembers" Type="Self.BandMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BandBreakups">
+              <PropertyRef Name="FID" />
+            </Principal>
+            <Dependent Role="BandMembers">
+              <PropertyRef Name="FID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reviews__SID__3C69FB99">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="SID" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MusicDBModelStoreContainer">
+          <EntitySet Name="Artists" EntityType="Self.Artists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BandBreakups" EntityType="Self.BandBreakups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bands" EntityType="Self.Bands" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Songs" EntityType="Self.Songs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArtistsSongs" EntityType="Self.ArtistsSongs" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ArtistsSongs].[AID] AS [AID], 
+    [ArtistsSongs].[SID] AS [SID]
+    FROM [dbo].[ArtistsSongs] AS [ArtistsSongs]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BandMembers" EntityType="Self.BandMembers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BandMembers].[FID] AS [FID], 
+    [BandMembers].[BID] AS [BID], 
+    [BandMembers].[Member] AS [Member]
+    FROM [dbo].[BandMembers] AS [BandMembers]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__ArtistsSong__AID__3E52440B" Association="Self.FK__ArtistsSong__AID__3E52440B">
+            <End Role="Artists" EntitySet="Artists" />
+            <End Role="ArtistsSongs" EntitySet="ArtistsSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArtistsSong__SID__3F466844" Association="Self.FK__ArtistsSong__SID__3F466844">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="ArtistsSongs" EntitySet="ArtistsSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BandBreakup__BID__4222D4EF" Association="Self.FK__BandBreakup__BID__4222D4EF">
+            <End Role="Bands" EntitySet="Bands" />
+            <End Role="BandBreakups" EntitySet="BandBreakups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BandMembers__BID__44FF419A" Association="Self.FK__BandMembers__BID__44FF419A">
+            <End Role="Bands" EntitySet="Bands" />
+            <End Role="BandMembers" EntitySet="BandMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BandMembers__FID__440B1D61" Association="Self.FK__BandMembers__FID__440B1D61">
+            <End Role="BandBreakups" EntitySet="BandBreakups" />
+            <End Role="BandMembers" EntitySet="BandMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reviews__SID__3C69FB99" Association="Self.FK__Reviews__SID__3C69FB99">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MusicDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="AID" />
+          </Key>
+          <Property Name="AID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YOB" Type="Int16" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Songs" Relationship="Self.ArtistsSongs" FromRole="Artists" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="BandBreakup">
+          <Key>
+            <PropertyRef Name="FID" />
+          </Key>
+          <Property Name="FID" Type="Int32" Nullable="false" />
+          <Property Name="BID" Type="Int32" Nullable="false" />
+          <Property Name="Form" Type="Int16" Nullable="false" />
+          <Property Name="BreakUp" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Band" Relationship="Self.FK__BandBreakup__BID__4222D4EF" FromRole="BandBreakups" ToRole="Bands" />
+          <NavigationProperty Name="BandMembers" Relationship="Self.FK__BandMembers__FID__440B1D61" FromRole="BandBreakups" ToRole="BandMembers" />
+        </EntityType>
+        <EntityType Name="Band">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="BID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YOB" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="BandBreakups" Relationship="Self.FK__BandBreakup__BID__4222D4EF" FromRole="Bands" ToRole="BandBreakups" />
+          <NavigationProperty Name="BandMembers" Relationship="Self.FK__BandMembers__BID__44FF419A" FromRole="Bands" ToRole="BandMembers" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SID" Type="Int32" Nullable="false" />
+          <Property Name="Review1" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Reviews__SID__3C69FB99" FromRole="Reviews" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="Int32" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SongTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ReleaseYear" Type="Int16" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK__Reviews__SID__3C69FB99" FromRole="Songs" ToRole="Reviews" />
+          <NavigationProperty Name="Artists" Relationship="Self.ArtistsSongs" FromRole="Songs" ToRole="Artists" />
+        </EntityType>
+        <EntityType Name="BandMember">
+          <Key>
+            <PropertyRef Name="FID" />
+            <PropertyRef Name="BID" />
+            <PropertyRef Name="Member" />
+          </Key>
+          <Property Name="FID" Type="Int32" Nullable="false" />
+          <Property Name="BID" Type="Int32" Nullable="false" />
+          <Property Name="Member" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BandBreakup" Relationship="Self.FK__BandMembers__FID__440B1D61" FromRole="BandMembers" ToRole="BandBreakups" />
+          <NavigationProperty Name="Band" Relationship="Self.FK__BandMembers__BID__44FF419A" FromRole="BandMembers" ToRole="Bands" />
+        </EntityType>
+        <Association Name="FK__BandBreakup__BID__4222D4EF">
+          <End Role="Bands" Type="Self.Band" Multiplicity="1" />
+          <End Role="BandBreakups" Type="Self.BandBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bands">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="BandBreakups">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BandMembers__FID__440B1D61">
+          <End Role="BandBreakups" Type="Self.BandBreakup" Multiplicity="1" />
+          <End Role="BandMembers" Type="Self.BandMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BandBreakups">
+              <PropertyRef Name="FID" />
+            </Principal>
+            <Dependent Role="BandMembers">
+              <PropertyRef Name="FID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BandMembers__BID__44FF419A">
+          <End Role="Bands" Type="Self.Band" Multiplicity="1" />
+          <End Role="BandMembers" Type="Self.BandMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bands">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="BandMembers">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reviews__SID__3C69FB99">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="SID" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ArtistsSongs">
+          <End Role="Artists" Type="Self.Artist" Multiplicity="*" />
+          <End Role="Songs" Type="Self.Song" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="MusicDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="BandBreakups" EntityType="Self.BandBreakup" />
+          <EntitySet Name="Bands" EntityType="Self.Band" />
+          <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <EntitySet Name="Songs" EntityType="Self.Song" />
+          <EntitySet Name="BandMembers" EntityType="Self.BandMember" />
+          <AssociationSet Name="FK__BandBreakup__BID__4222D4EF" Association="Self.FK__BandBreakup__BID__4222D4EF">
+            <End Role="Bands" EntitySet="Bands" />
+            <End Role="BandBreakups" EntitySet="BandBreakups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BandMembers__FID__440B1D61" Association="Self.FK__BandMembers__FID__440B1D61">
+            <End Role="BandBreakups" EntitySet="BandBreakups" />
+            <End Role="BandMembers" EntitySet="BandMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BandMembers__BID__44FF419A" Association="Self.FK__BandMembers__BID__44FF419A">
+            <End Role="Bands" EntitySet="Bands" />
+            <End Role="BandMembers" EntitySet="BandMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reviews__SID__3C69FB99" Association="Self.FK__Reviews__SID__3C69FB99">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="ArtistsSongs" Association="Self.ArtistsSongs">
+            <End Role="Artists" EntitySet="Artists" />
+            <End Role="Songs" EntitySet="Songs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MusicDBModelStoreContainer" CdmEntityContainer="MusicDBEntities">
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="MusicDBModel.Artist">
+              <MappingFragment StoreEntitySet="Artists">
+                <ScalarProperty Name="AID" ColumnName="AID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YOB" ColumnName="YOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BandBreakups">
+            <EntityTypeMapping TypeName="MusicDBModel.BandBreakup">
+              <MappingFragment StoreEntitySet="BandBreakups">
+                <ScalarProperty Name="FID" ColumnName="FID" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="Form" ColumnName="Form" />
+                <ScalarProperty Name="BreakUp" ColumnName="BreakUp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bands">
+            <EntityTypeMapping TypeName="MusicDBModel.Band">
+              <MappingFragment StoreEntitySet="Bands">
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YOB" ColumnName="YOB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="MusicDBModel.Review">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="Review1" ColumnName="Review" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Songs">
+            <EntityTypeMapping TypeName="MusicDBModel.Song">
+              <MappingFragment StoreEntitySet="Songs">
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="SongTitle" ColumnName="SongTitle" />
+                <ScalarProperty Name="ReleaseYear" ColumnName="ReleaseYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BandMembers">
+            <EntityTypeMapping TypeName="MusicDBModel.BandMember">
+              <MappingFragment StoreEntitySet="BandMembers">
+                <ScalarProperty Name="FID" ColumnName="FID" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="Member" ColumnName="Member" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ArtistsSongs" TypeName="MusicDBModel.ArtistsSongs" StoreEntitySet="ArtistsSongs">
+            <EndProperty Name="Artists">
+              <ScalarProperty Name="AID" ColumnName="AID" />
+            </EndProperty>
+            <EndProperty Name="Songs">
+              <ScalarProperty Name="SID" ColumnName="SID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
