@@ -1,4 +1,4 @@
-# Mdatabase
+# MyTones
 **Current State: Finished**
 
 Database project designed and built for CS 398 Professional Development Class.
